@@ -5,7 +5,7 @@
 
 void render_grid(auto sample_grid, int res, auto renderer);
 void line(auto r, SDL_Point a, SDL_Point b);
-void square_march(auto sample_grid, auto col, auto row, auto grid_res, auto renderer);
+void square_march(auto sample_grid, auto grid_res, auto renderer);
 
 //following https://www.youtube.com/watch?v=T46nu5e4pNI
 int main()
@@ -57,7 +57,7 @@ int main()
 		SDL_RenderClear(renderer);
 
 		render_grid(sample_grid, grid_res, renderer);
-		square_march(sample_grid, col, row, grid_res, renderer);
+		square_march(sample_grid, grid_res, renderer);
 
 		SDL_RenderPresent(renderer);
 		SDL_Delay(50);
@@ -71,8 +71,10 @@ Uint8 square_type(auto g, auto i, auto j) {
 			g[i][j+1];
 }
 
-void square_march(auto sample_grid, auto col, auto row, auto grid_res, auto renderer) {
+void square_march(auto sample_grid, auto grid_res, auto renderer) {
+	int col = sample_grid.size();
 	for (auto i = 0; i < col - 1; i++) {
+		int row = sample_grid[i].size();
 		for (auto j = 0; j < row - 1; j++) {
 			int x = i * grid_res;
 			int y = j * grid_res;
