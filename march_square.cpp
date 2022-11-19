@@ -74,7 +74,6 @@ int main()
 				}
 			}
 		}
-		std::cout << thresh << std::endl;
 		//clear the screen
 		SDL_SetRenderDrawColor(renderer, 128, 128, 128, 255);
 		SDL_RenderClear(renderer);
