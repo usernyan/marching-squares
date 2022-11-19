@@ -90,12 +90,6 @@ Uint8 square_type(auto a, auto b, auto c, auto d) {
 	return a * 8 + b * 4 + c * 2 + d;
 
 }
-Uint8 square_type(auto g, auto i, auto j) {
-	return  g[i][j] * 8 + 
-			g[i+1][j] * 4 +
-			g[i+1][j+1] * 2 +
-			g[i][j+1];
-}
 
 void square_march(auto g, auto res, InterpType it, auto renderer) {
 	int col = g.size();
