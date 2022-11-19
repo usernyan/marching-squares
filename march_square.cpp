@@ -147,7 +147,7 @@ void render_grid(auto sample_grid, int res, auto renderer) {
 			else {
 				SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 			}
-			dot_at_coord(renderer, i * res, j * res, 1);
+			dot_at_coord(renderer, i * res, j * res, 3);
 		}
 	}
 }
