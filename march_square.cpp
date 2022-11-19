@@ -5,7 +5,8 @@
 
 void render_grid(auto sample_grid, int res, auto renderer);
 void line(auto r, SDL_Point a, SDL_Point b);
-void square_march(auto sample_grid, auto grid_res, auto renderer);
+enum class InterpType {None, Linear};
+void square_march(auto g, auto res, InterpType it, auto renderer);
 
 //following https://www.youtube.com/watch?v=T46nu5e4pNI
 int main()
@@ -45,19 +46,33 @@ int main()
 		}
 	}
 
+	//global state
+	std::vector<InterpType> types = {InterpType::None, InterpType::Linear};
+	auto cur_interp = types.begin()+1;
+
 	while(running)
 	{
 		while (SDL_PollEvent(&e))
 		{
 			if (e.type == SDL_QUIT)
 				running = false;
+			else if (e.type == SDL_KEYDOWN) {
+				switch (e.key.keysym.sym) {
+					case SDLK_i:
+						cur_interp++;
+						if (cur_interp == types.end()) {
+							cur_interp = types.begin();
+						}
+						break;
+				}
+			}
 		}
 		//clear the screen
 		SDL_SetRenderDrawColor(renderer, 128, 128, 128, 255);
 		SDL_RenderClear(renderer);
 
 		render_grid(sample_grid, grid_res, renderer);
-		square_march(sample_grid, grid_res, renderer);
+		square_march(sample_grid, grid_res, *cur_interp, renderer);
 
 		SDL_RenderPresent(renderer);
 		SDL_Delay(50);
@@ -82,23 +97,38 @@ Uint8 square_type(auto g, auto i, auto j) {
 			g[i][j+1];
 }
 
-void square_march(auto g, auto res, auto renderer) {
+void square_march(auto g, auto res, InterpType it, auto renderer) {
 	int col = g.size();
 	for (auto i = 0; i < col - 1; i++) {
 		int row = g[i].size();
 		for (auto j = 0; j < row - 1; j++) {
 			int x = i * res;
 			int y = j * res;
-			int half = (int) res * 0.5;
+			float half = res * 0.5;
 			float p0 = g[i][j];
 			float p1 = g[i+1][j];
 			float p2 = g[i+1][j+1];
 			float p3 = g[i][j+1];
+
+			//interpolation terms
+			std::vector<float> int_term;
+			if (it == InterpType::Linear) {
+				int_term = {
+					-p0 * res / (p1 - p0),
+					-p1 * res / (p2 - p1),
+					-p3 * res / (p2 - p3),
+					-p0 * res / (p3 - p0)
+				};
+			}
+			else {
+				int_term = {half, half, half, half};
+			}
+
 			//top, right, bottom, left
-			SDL_Point t = {(int)(x - p0 * res / (p1 - p0)), y};
-			SDL_Point r = {x + res, 			(int)(y - p1 * res / (p2 - p1))};
-			SDL_Point b = {(int)(x - p3 * res / (p2 - p3)), y + res};
-			SDL_Point l = {x, 					(int)(y - p0 * res / (p3 - p0))};
+			SDL_Point t = {x + (int)int_term[0], y};
+			SDL_Point r = {x + res, y + (int)int_term[1]};
+			SDL_Point b = {x + (int)int_term[2], y + res};
+			SDL_Point l = {x, y + (int)int_term[3]};
 			Uint8 sqr_config = square_type(lt_zero(p0), lt_zero(p1), lt_zero(p2), lt_zero(p3));
 			/* std::cout << (int)sqr_config << std::endl; */
 			switch (sqr_config) {
