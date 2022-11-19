@@ -57,10 +57,6 @@ int main()
 		render_grid(sample_grid, col, row, grid_res, renderer);
 	square_march(sample_grid, col, row, grid_res, renderer);
 
-		//Test rendering.
-		/* SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255); */
-		/* SDL_RenderDrawPoint(renderer, 0, 0); */
-
 		SDL_RenderPresent(renderer);
 		SDL_Delay(50);
 	}
