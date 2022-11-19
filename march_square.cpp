@@ -50,6 +50,7 @@ int main()
 	auto cur_interp = types.begin()+1;
 
 	float thresh = 0.0;
+	float d_thresh = 0.125;
 
 	while(running)
 	{
@@ -65,10 +66,10 @@ int main()
 							cur_interp = types.begin();
 						break;
 					case SDLK_EQUALS:
-						thresh += 0.1;
+						thresh += d_thresh;
 						break;
 					case SDLK_MINUS:
-						thresh -= 0.1;
+						thresh -= d_thresh;
 						break;
 				}
 			}
