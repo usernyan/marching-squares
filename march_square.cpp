@@ -86,6 +86,10 @@ int main()
 	}
 }
 
+Uint8 gte_thresh(auto v, auto h) {
+	return (v >= h) ? (1):(0);
+}
+
 Uint8 gte_zero(auto v) {
 	return (v >= 0) ? (1):(0);
 }
@@ -111,10 +115,10 @@ void square_march(auto g, auto thresh, auto res, InterpType it, auto renderer) {
 			//interpolation terms
 			if (it == InterpType::Linear) {
 				int_term = {
-					-p0 / (p1 - p0),
-					-p1 / (p2 - p1),
-					-p3 / (p2 - p3),
-					-p0 / (p3 - p0)
+					(thresh-p0) / (p1 - p0),
+					(thresh-p1) / (p2 - p1),
+					(thresh-p3) / (p2 - p3),
+					(thresh-p0) / (p3 - p0)
 				};
 			}
 			else {
@@ -126,7 +130,7 @@ void square_march(auto g, auto thresh, auto res, InterpType it, auto renderer) {
 			SDL_Point r = {x + res, y + (int)(res *int_term[1])};
 			SDL_Point b = {x + (int)(res * int_term[2]), y + res};
 			SDL_Point l = {x,       y + (int)(res *int_term[3])};
-			Uint8 sqr_config = square_type(gte_zero(p0), gte_zero(p1), gte_zero(p2), gte_zero(p3));
+			Uint8 sqr_config = square_type(gte_thresh(p0, thresh), gte_thresh(p1, thresh), gte_thresh(p2, thresh), gte_thresh(p3, thresh));
 			switch (sqr_config) {
 				case 0:
 					break;
