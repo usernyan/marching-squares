@@ -185,7 +185,9 @@ void render_grid(auto sample_grid, int res, auto renderer) {
 	for(int i = 0; i < sample_grid.size(); i++) {
 		for(int j = 0; j < sample_grid[i].size(); j++) {
 			auto val = sample_grid[i][j];
-			Uint8 col = (val + 1)/2 * 255;
+			auto val_clamp = (val <= -1.0) ? -1.0:val;
+			val_clamp = (val_clamp >= 1.0) ? 1.0:val_clamp;
+			Uint8 col = (val_clamp + 1)/2 * 255;
 			SDL_SetRenderDrawColor(renderer, col, col, col, 255);
 			dot_at_coord(renderer, i * res, j * res, 3);
 		}
