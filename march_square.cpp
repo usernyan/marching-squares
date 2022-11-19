@@ -3,7 +3,7 @@
 #include <random>
 #include <iostream>
 
-void render_grid(auto sample_grid, int c, int r, int res, auto renderer);
+void render_grid(auto sample_grid, int res, auto renderer);
 void line(auto r, SDL_Point a, SDL_Point b);
 void square_march(auto sample_grid, auto col, auto row, auto grid_res, auto renderer);
 
@@ -56,7 +56,7 @@ int main()
 		SDL_SetRenderDrawColor(renderer, 128, 128, 128, 255);
 		SDL_RenderClear(renderer);
 
-		render_grid(sample_grid, col, row, grid_res, renderer);
+		render_grid(sample_grid, grid_res, renderer);
 		square_march(sample_grid, col, row, grid_res, renderer);
 
 		SDL_RenderPresent(renderer);
@@ -129,9 +129,9 @@ void line(auto r, SDL_Point a, SDL_Point b) {
 	SDL_RenderDrawLine(r, a.x, a.y, b.x, b.y);
 }
 
-void render_grid(auto sample_grid, int c, int r, int res, auto renderer) {
-	for(int i = 0; i < c; i++) {
-		for(int j = 0; j < r; j++) {
+void render_grid(auto sample_grid, int res, auto renderer) {
+	for(int i = 0; i < sample_grid.size(); i++) {
+		for(int j = 0; j < sample_grid[i].size(); j++) {
 			auto sample_val = sample_grid[i][j];
 			if (sample_val) {
 				SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
