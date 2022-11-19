@@ -49,6 +49,8 @@ int main()
 	std::vector<InterpType> types = {InterpType::None, InterpType::Linear};
 	auto cur_interp = types.begin()+1;
 
+	float thresh = 0.0;
+
 	while(running)
 	{
 		while (SDL_PollEvent(&e))
@@ -62,9 +64,16 @@ int main()
 						if (cur_interp == types.end())
 							cur_interp = types.begin();
 						break;
+					case SDLK_EQUALS:
+						thresh += 0.1;
+						break;
+					case SDLK_MINUS:
+						thresh -= 0.1;
+						break;
 				}
 			}
 		}
+		std::cout << thresh << std::endl;
 		//clear the screen
 		SDL_SetRenderDrawColor(renderer, 128, 128, 128, 255);
 		SDL_RenderClear(renderer);
