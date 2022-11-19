@@ -32,8 +32,8 @@ int main()
 	int row = 1 + baseY/grid_res;
 
 	std::random_device dev;
-	std::uniform_int_distribution<int> nd(0, 1);
-	std::vector<std::vector<int>> sample_grid;
+	std::uniform_real_distribution<float> nd(-1, 1);
+	std::vector<std::vector<float>> sample_grid;
 	sample_grid.resize(col);
 	for(int i = 0; i < col; i++) {
 		sample_grid[i].resize(row);
@@ -64,6 +64,17 @@ int main()
 	}
 }
 
+Uint8 lt_zero(auto v) {
+	if (v < 0)
+		return 0;
+	else
+		return 1;
+}
+
+Uint8 square_type(auto a, auto b, auto c, auto d) {
+	return a * 8 + b * 4 + c * 2 + d;
+
+}
 Uint8 square_type(auto g, auto i, auto j) {
 	return  g[i][j] * 8 + 
 			g[i+1][j] * 4 +
@@ -71,20 +82,24 @@ Uint8 square_type(auto g, auto i, auto j) {
 			g[i][j+1];
 }
 
-void square_march(auto sample_grid, auto grid_res, auto renderer) {
-	int col = sample_grid.size();
+void square_march(auto g, auto res, auto renderer) {
+	int col = g.size();
 	for (auto i = 0; i < col - 1; i++) {
-		int row = sample_grid[i].size();
+		int row = g[i].size();
 		for (auto j = 0; j < row - 1; j++) {
-			int x = i * grid_res;
-			int y = j * grid_res;
-			int half = (int) grid_res*0.5;
+			int x = i * res;
+			int y = j * res;
+			int half = (int) res * 0.5;
+			float p0 = g[i][j];
+			float p1 = g[i+1][j];
+			float p2 = g[i+1][j+1];
+			float p3 = g[i][j+1];
 			//top, right, bottom, left
 			SDL_Point t = {x + half,     y};
-			SDL_Point r = {x + grid_res, y + half};
-			SDL_Point b = {x + half,     y + grid_res};
+			SDL_Point r = {x + res, y + half};
+			SDL_Point b = {x + half,     y + res};
 			SDL_Point l = {x, 			 y + half};
-			Uint8 sqr_config = square_type(sample_grid, i, j);
+			Uint8 sqr_config = square_type(lt_zero(p0), lt_zero(p1), lt_zero(p2), lt_zero(p3));
 			/* std::cout << (int)sqr_config << std::endl; */
 			switch (sqr_config) {
 				case 0:
@@ -141,7 +156,7 @@ void render_grid(auto sample_grid, int res, auto renderer) {
 	for(int i = 0; i < sample_grid.size(); i++) {
 		for(int j = 0; j < sample_grid[i].size(); j++) {
 			auto sample_val = sample_grid[i][j];
-			if (sample_val) {
+			if (lt_zero(sample_val)) {
 				SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 			}
 			else {
