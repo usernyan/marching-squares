@@ -155,13 +155,9 @@ void dot_at_coord(auto r, auto x, auto y, auto s) {
 void render_grid(auto sample_grid, int res, auto renderer) {
 	for(int i = 0; i < sample_grid.size(); i++) {
 		for(int j = 0; j < sample_grid[i].size(); j++) {
-			auto sample_val = sample_grid[i][j];
-			if (lt_zero(sample_val)) {
-				SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-			}
-			else {
-				SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-			}
+			auto val = sample_grid[i][j];
+			Uint8 col = (val + 1)/2 * 256;
+			SDL_SetRenderDrawColor(renderer, col, col, col, 255);
 			dot_at_coord(renderer, i * res, j * res, 3);
 		}
 	}
