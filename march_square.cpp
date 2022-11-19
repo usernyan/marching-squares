@@ -107,21 +107,21 @@ void square_march(auto g, auto res, InterpType it, auto renderer) {
 			std::vector<float> int_term;
 			if (it == InterpType::Linear) {
 				int_term = {
-					-p0 * res / (p1 - p0),
-					-p1 * res / (p2 - p1),
-					-p3 * res / (p2 - p3),
-					-p0 * res / (p3 - p0)
+					-p0 / (p1 - p0),
+					-p1 / (p2 - p1),
+					-p3 / (p2 - p3),
+					-p0 / (p3 - p0)
 				};
 			}
 			else {
-				int_term = {half, half, half, half};
+				int_term = {0.5, 0.5, 0.5, 0.5};
 			}
 
 			//top, right, bottom, left
-			SDL_Point t = {x + (int)int_term[0], y};
-			SDL_Point r = {x + res, y + (int)int_term[1]};
-			SDL_Point b = {x + (int)int_term[2], y + res};
-			SDL_Point l = {x, y + (int)int_term[3]};
+			SDL_Point t = {x + (int)(res * int_term[0]), y};
+			SDL_Point r = {x + res, y + (int)(res *int_term[1])};
+			SDL_Point b = {x + (int)(res * int_term[2]), y + res};
+			SDL_Point l = {x,       y + (int)(res *int_term[3])};
 			Uint8 sqr_config = square_type(lt_zero(p0), lt_zero(p1), lt_zero(p2), lt_zero(p3));
 			/* std::cout << (int)sqr_config << std::endl; */
 			switch (sqr_config) {
