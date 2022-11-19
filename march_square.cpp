@@ -95,10 +95,10 @@ void square_march(auto g, auto res, auto renderer) {
 			float p2 = g[i+1][j+1];
 			float p3 = g[i][j+1];
 			//top, right, bottom, left
-			SDL_Point t = {x - p0 * res / (p1 - p0), y};
-			SDL_Point r = {x + res, 				 y - p1 * res / (p2 - p1)};
-			SDL_Point b = {x - p3 * res / (p2 - p3), y + res};
-			SDL_Point l = {x, 						 y - p0 * res / (p3 - p0)};
+			SDL_Point t = {(int)(x - p0 * res / (p1 - p0)), y};
+			SDL_Point r = {x + res, 			(int)(y - p1 * res / (p2 - p1))};
+			SDL_Point b = {(int)(x - p3 * res / (p2 - p3)), y + res};
+			SDL_Point l = {x, 					(int)(y - p0 * res / (p3 - p0))};
 			Uint8 sqr_config = square_type(lt_zero(p0), lt_zero(p1), lt_zero(p2), lt_zero(p3));
 			/* std::cout << (int)sqr_config << std::endl; */
 			switch (sqr_config) {
