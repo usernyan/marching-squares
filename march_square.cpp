@@ -91,10 +91,6 @@ Uint8 gte_thresh(auto v, auto h) {
 	return (v >= h) ? (1):(0);
 }
 
-Uint8 gte_zero(auto v) {
-	return (v >= 0) ? (1):(0);
-}
-
 Uint8 square_type(auto a, auto b, auto c, auto d) {
 	return a * 8 + b * 4 + c * 2 + d;
 
