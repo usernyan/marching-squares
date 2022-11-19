@@ -34,8 +34,7 @@ int main()
 
 	std::random_device dev;
 	std::uniform_real_distribution<float> nd(-1, 1);
-	std::vector<std::vector<float>> sample_grid;
-	sample_grid.resize(col);
+	std::vector<std::vector<float>> sample_grid(col);
 	for(int i = 0; i < col; i++) {
 		sample_grid[i].resize(row);
 	}
