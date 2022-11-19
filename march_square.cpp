@@ -186,13 +186,3 @@ void render_grid(auto sample_grid, int res, auto renderer) {
 		}
 	}
 }
-
-
-
-
-
-
-
-
-
-
