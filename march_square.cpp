@@ -2,6 +2,7 @@
 #include <vector>
 #include <random>
 #include <iostream>
+#include <cmath>
 
 void render_grid(auto sample_grid, int res, auto renderer);
 void line(auto r, SDL_Point a, SDL_Point b);
@@ -41,7 +42,17 @@ int main()
 	//populate grid
 	for (int i = 0; i < col; i++) {
 		for (int j = 0; j < row; j++) {
-			sample_grid[i][j] = nd(dev);
+			/* sample_grid[i][j] = nd(dev); */
+			float cx = 250;
+			float cy = 250;
+			float r = 120;
+			float x0 = i * grid_res;
+			float y0 = j * grid_res;
+			float a = x0 - cx;
+			float b = y0 - cy;
+			float d = std::sqrt(a*a + b*b) - r;
+			float d_scaled = d / r * 10;
+			sample_grid[i][j] = d_scaled;
 		}
 	}
 
