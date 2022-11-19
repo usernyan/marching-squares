@@ -131,6 +131,12 @@ void line(auto r, SDL_Point a, SDL_Point b) {
 	SDL_RenderDrawLine(r, a.x, a.y, b.x, b.y);
 }
 
+void dot_at_coord(auto r, auto x, auto y, auto s) {
+	SDL_Rect p = {x - (int)s/2, y - (int)s/2, s, s};
+	SDL_RenderFillRect(r, &p);
+
+}
+
 void render_grid(auto sample_grid, int res, auto renderer) {
 	for(int i = 0; i < sample_grid.size(); i++) {
 		for(int j = 0; j < sample_grid[i].size(); j++) {
@@ -141,7 +147,7 @@ void render_grid(auto sample_grid, int res, auto renderer) {
 			else {
 				SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 			}
-			SDL_RenderDrawPoint(renderer, i * res, j * res);
+			dot_at_coord(renderer, i * res, j * res, 1);
 		}
 	}
 }
