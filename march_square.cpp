@@ -78,11 +78,8 @@ int main()
 	}
 }
 
-Uint8 lt_zero(auto v) {
-	if (v < 0)
-		return 0;
-	else
-		return 1;
+Uint8 gte_zero(auto v) {
+	return (v >= 0) ? (1):(0);
 }
 
 Uint8 square_type(auto a, auto b, auto c, auto d) {
@@ -122,7 +119,7 @@ void square_march(auto g, auto res, InterpType it, auto renderer) {
 			SDL_Point r = {x + res, y + (int)(res *int_term[1])};
 			SDL_Point b = {x + (int)(res * int_term[2]), y + res};
 			SDL_Point l = {x,       y + (int)(res *int_term[3])};
-			Uint8 sqr_config = square_type(lt_zero(p0), lt_zero(p1), lt_zero(p2), lt_zero(p3));
+			Uint8 sqr_config = square_type(gte_zero(p0), gte_zero(p1), gte_zero(p2), gte_zero(p3));
 			/* std::cout << (int)sqr_config << std::endl; */
 			switch (sqr_config) {
 				case 0:
