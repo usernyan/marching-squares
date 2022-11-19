@@ -45,7 +45,7 @@ int main()
 		}
 	}
 
-	//global state
+	//type of interpolation to use
 	std::vector<InterpType> types = {InterpType::None, InterpType::Linear};
 	auto cur_interp = types.begin()+1;
 
@@ -59,9 +59,8 @@ int main()
 				switch (e.key.keysym.sym) {
 					case SDLK_i:
 						cur_interp++;
-						if (cur_interp == types.end()) {
+						if (cur_interp == types.end())
 							cur_interp = types.begin();
-						}
 						break;
 				}
 			}
@@ -89,19 +88,18 @@ Uint8 square_type(auto a, auto b, auto c, auto d) {
 
 void square_march(auto g, auto res, InterpType it, auto renderer) {
 	int col = g.size();
+	std::vector<float> int_term;
 	for (auto i = 0; i < col - 1; i++) {
 		int row = g[i].size();
 		for (auto j = 0; j < row - 1; j++) {
 			int x = i * res;
 			int y = j * res;
-			float half = res * 0.5;
 			float p0 = g[i][j];
 			float p1 = g[i+1][j];
 			float p2 = g[i+1][j+1];
 			float p3 = g[i][j+1];
 
 			//interpolation terms
-			std::vector<float> int_term;
 			if (it == InterpType::Linear) {
 				int_term = {
 					-p0 / (p1 - p0),
@@ -120,7 +118,6 @@ void square_march(auto g, auto res, InterpType it, auto renderer) {
 			SDL_Point b = {x + (int)(res * int_term[2]), y + res};
 			SDL_Point l = {x,       y + (int)(res *int_term[3])};
 			Uint8 sqr_config = square_type(gte_zero(p0), gte_zero(p1), gte_zero(p2), gte_zero(p3));
-			/* std::cout << (int)sqr_config << std::endl; */
 			switch (sqr_config) {
 				case 0:
 					break;
@@ -169,7 +166,6 @@ void line(auto r, SDL_Point a, SDL_Point b) {
 void dot_at_coord(auto r, auto x, auto y, auto s) {
 	SDL_Rect p = {x - (int)s/2, y - (int)s/2, s, s};
 	SDL_RenderFillRect(r, &p);
-
 }
 
 void render_grid(auto sample_grid, int res, auto renderer) {
