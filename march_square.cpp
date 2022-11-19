@@ -6,7 +6,7 @@
 void render_grid(auto sample_grid, int res, auto renderer);
 void line(auto r, SDL_Point a, SDL_Point b);
 enum class InterpType {None, Linear};
-void square_march(auto g, auto res, InterpType it, auto renderer);
+void square_march(auto g, auto thresh, auto res, InterpType it, auto renderer);
 
 //following https://www.youtube.com/watch?v=T46nu5e4pNI
 int main()
@@ -79,7 +79,7 @@ int main()
 		SDL_RenderClear(renderer);
 
 		render_grid(sample_grid, grid_res, renderer);
-		square_march(sample_grid, grid_res, *cur_interp, renderer);
+		square_march(sample_grid, thresh, grid_res, *cur_interp, renderer);
 
 		SDL_RenderPresent(renderer);
 		SDL_Delay(50);
@@ -95,7 +95,7 @@ Uint8 square_type(auto a, auto b, auto c, auto d) {
 
 }
 
-void square_march(auto g, auto res, InterpType it, auto renderer) {
+void square_march(auto g, auto thresh, auto res, InterpType it, auto renderer) {
 	int col = g.size();
 	std::vector<float> int_term;
 	for (auto i = 0; i < col - 1; i++) {
