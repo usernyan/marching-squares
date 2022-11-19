@@ -49,7 +49,8 @@ int main()
 	std::vector<InterpType> types = {InterpType::None, InterpType::Linear};
 	auto cur_interp = types.begin()+1;
 
-	float thresh = 0.0;
+	float thresh_default = 0.0;
+	float thresh = thresh_default;
 	float d_thresh = 0.125;
 
 	while(running)
@@ -70,6 +71,9 @@ int main()
 						break;
 					case SDLK_MINUS:
 						thresh -= d_thresh;
+						break;
+					case SDLK_0:
+						thresh = thresh_default;
 						break;
 				}
 			}
