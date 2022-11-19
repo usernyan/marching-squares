@@ -1,4 +1,5 @@
 #include <SDL2/SDL.h>
+#include <vector>
 #include <random>
 #include <iostream>
 
@@ -32,9 +33,10 @@ int main()
 
 	std::random_device dev;
 	std::uniform_int_distribution<int> nd(0, 1);
-	int **sample_grid = new int *[col];
+	std::vector<std::vector<int>> sample_grid;
+	sample_grid.resize(col);
 	for(int i = 0; i < col; i++) {
-		sample_grid[i] = new int [row];
+		sample_grid[i].resize(row);
 	}
 	//populate grid
 	for (int i = 0; i < col; i++) {
