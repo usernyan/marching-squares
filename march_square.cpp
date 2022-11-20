@@ -9,6 +9,18 @@ void line(auto r, SDL_Point a, SDL_Point b);
 enum class InterpType {None, Linear};
 void square_march(auto g, auto thresh, auto res, InterpType it, auto renderer);
 
+struct ball {
+	float cx;
+	float cy;
+	float r;
+};
+
+float ball_dist(float x, float y, struct ball m) {
+	float a = x - m.cx;
+	float b = y - m.cy;
+	return std::sqrt(a*a + b*b) + m.r;
+}
+
 //following https://www.youtube.com/watch?v=T46nu5e4pNI
 int main()
 {
@@ -39,20 +51,32 @@ int main()
 	for(int i = 0; i < col; i++) {
 		sample_grid[i].resize(row);
 	}
+	std::uniform_real_distribution<float> rand_x(0, base_x);
+	std::uniform_real_distribution<float> rand_y(0, base_y);
+	std::uniform_real_distribution<float> rand_r(10, 50);
+	std::vector<struct ball> all_ball;
+	for(int i = 0; i < 5; i++ ){
+		struct ball new_ball = {rand_x(dev), rand_y(dev), rand_r(dev)};
+		all_ball.push_back(new_ball);
+	}
 	//populate grid
 	for (int i = 0; i < col; i++) {
 		for (int j = 0; j < row; j++) {
 			/* sample_grid[i][j] = nd(dev); */
-			float cx = 250;
-			float cy = 250;
-			float r = 120;
+			/* float cx = 250; */
+			/* float cy = 250; */
+			/* float r = 120; */
+			/* struct ball center = {250, 250, 120}; */
 			float x0 = i * grid_res;
 			float y0 = j * grid_res;
-			float a = x0 - cx;
-			float b = y0 - cy;
-			float d = std::sqrt(a*a + b*b) - r;
-			float d_scaled = d / r * 10;
-			sample_grid[i][j] = d_scaled;
+			/* float d_scaled = ball_dist(x0, y0, center) / center.r * 10; */
+			float d = 0;
+			for(int k = 0; k < all_ball.size(); k++) {
+				struct ball b = all_ball[k];
+				d += 1/ball_dist(x0, y0, b);
+			}
+			d = d * 40 - 1;
+			sample_grid[i][j] = d;
 		}
 	}
 
