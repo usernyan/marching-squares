@@ -8,6 +8,7 @@ void render_grid(auto &sample_grid, int res, auto renderer);
 void line(auto r, SDL_Point a, SDL_Point b);
 enum class InterpType {None, Linear};
 void square_march(auto &g, auto thresh, auto res, InterpType it, auto renderer);
+void populate_grid(auto &g, auto &balls, auto res);
 
 struct ball {
 	float cx;
@@ -60,25 +61,7 @@ int main()
 		all_ball.push_back(new_ball);
 	}
 	//populate grid
-	for (int i = 0; i < col; i++) {
-		for (int j = 0; j < row; j++) {
-			/* sample_grid[i][j] = nd(dev); */
-			/* float cx = 250; */
-			/* float cy = 250; */
-			/* float r = 120; */
-			/* struct ball center = {250, 250, 120}; */
-			float x0 = i * grid_res;
-			float y0 = j * grid_res;
-			/* float d_scaled = ball_dist(x0, y0, center) / center.r * 10; */
-			float d = 0;
-			for(int k = 0; k < all_ball.size(); k++) {
-				struct ball b = all_ball[k];
-				d += 1/ball_dist(x0, y0, b);
-			}
-			d = d * 40 - 1;
-			sample_grid[i][j] = d;
-		}
-	}
+	populate_grid(sample_grid, all_ball, grid_res);
 
 	//type of interpolation to use
 	std::vector<InterpType> types = {InterpType::None, InterpType::Linear};
@@ -227,4 +210,22 @@ void render_grid(auto &sample_grid, int res, auto renderer) {
 			dot_at_coord(renderer, i * res, j * res, 3);
 		}
 	}
+}
+
+void populate_grid(auto &g, auto &balls, auto res) {
+	for (int i = 0; i < g.size(); i++) {
+		auto m = g[i];
+		for (int j = 0; j < m.size(); j++) {
+			float x0 = i * res;
+			float y0 = j * res;
+			float d = 0;
+			for(int k = 0; k < balls.size(); k++) {
+				struct ball b = balls[k];
+				d += 1/ball_dist(x0, y0, b);
+			}
+			d = d * 40 - 1;
+			g[i][j] = d;
+		}
+	}
+
 }
