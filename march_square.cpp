@@ -19,19 +19,19 @@ int main()
 	bool running = true;
 
 	//screen dimensions and SDL initialization
-	int scaleX = 1;
-	int scaleY = 1;
-	int baseX = 500;
-	int baseY = 500;
-	SDL_CreateWindowAndRenderer(baseX * scaleX, baseY * scaleY, 0, &window, &renderer);
-	SDL_RenderSetScale(renderer, scaleX, scaleY);
+	int scale_x = 1;
+	int scale_y = 1;
+	int base_x = 500;
+	int base_y = 500;
+	SDL_CreateWindowAndRenderer(base_x * scale_x, base_y * scale_y, 0, &window, &renderer);
+	SDL_RenderSetScale(renderer, scale_x, scale_y);
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
 
 	//dimensions of sample grid
 	int grid_res = 20;
-	int col = 1 + baseX/grid_res;
-	int row = 1 + baseY/grid_res;
+	int col = 1 + base_x/grid_res;
+	int row = 1 + base_y/grid_res;
 
 	std::random_device dev;
 	std::uniform_real_distribution<float> nd(-1, 1);
