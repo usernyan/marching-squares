@@ -4,10 +4,10 @@
 #include <iostream>
 #include <cmath>
 
-void render_grid(auto sample_grid, int res, auto renderer);
+void render_grid(auto &sample_grid, int res, auto renderer);
 void line(auto r, SDL_Point a, SDL_Point b);
 enum class InterpType {None, Linear};
-void square_march(auto g, auto thresh, auto res, InterpType it, auto renderer);
+void square_march(auto &g, auto thresh, auto res, InterpType it, auto renderer);
 
 struct ball {
 	float cx;
@@ -134,7 +134,7 @@ Uint8 square_type(auto a, auto b, auto c, auto d) {
 
 }
 
-void square_march(auto g, auto thresh, auto res, InterpType it, auto renderer) {
+void square_march(auto &g, auto thresh, auto res, InterpType it, auto renderer) {
 	int col = g.size();
 	std::vector<float> int_term;
 	for (auto i = 0; i < col - 1; i++) {
@@ -216,7 +216,7 @@ void dot_at_coord(auto r, auto x, auto y, auto s) {
 	SDL_RenderFillRect(r, &p);
 }
 
-void render_grid(auto sample_grid, int res, auto renderer) {
+void render_grid(auto &sample_grid, int res, auto renderer) {
 	for(int i = 0; i < sample_grid.size(); i++) {
 		for(int j = 0; j < sample_grid[i].size(); j++) {
 			auto val = sample_grid[i][j];
