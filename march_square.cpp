@@ -14,6 +14,8 @@ struct ball {
 	float cx;
 	float cy;
 	float r;
+	float dx;
+	float dy;
 };
 
 float ball_dist(float x, float y, struct ball m) {
@@ -55,9 +57,10 @@ int main()
 	std::uniform_real_distribution<float> rand_x(0, base_x);
 	std::uniform_real_distribution<float> rand_y(0, base_y);
 	std::uniform_real_distribution<float> rand_r(10, 50);
+	std::uniform_real_distribution<float> rand_d(-1.0, 1.0);
 	std::vector<struct ball> all_ball;
 	for(int i = 0; i < 5; i++ ){
-		struct ball new_ball = {rand_x(dev), rand_y(dev), rand_r(dev)};
+		struct ball new_ball = {rand_x(dev), rand_y(dev), rand_r(dev), rand_d(dev), rand_d(dev)};
 		all_ball.push_back(new_ball);
 	}
 	//populate grid
@@ -100,6 +103,17 @@ int main()
 		SDL_SetRenderDrawColor(renderer, 128, 128, 128, 255);
 		SDL_RenderClear(renderer);
 
+		for(int i = 0; i < all_ball.size(); i++) {
+			struct ball *b = &all_ball[i];
+			b->cx += b->dx;
+			b->cy += b->dy;
+			if (b->cx < 0 || b->cx > base_x)
+				b->dx *= -1;
+			if (b->cy < 0 || b->cy > base_y)
+				b->dy *= -1;
+		}
+
+		populate_grid(sample_grid, all_ball, grid_res);
 		render_grid(sample_grid, grid_res, renderer);
 		square_march(sample_grid, thresh, grid_res, *cur_interp, renderer);
 
