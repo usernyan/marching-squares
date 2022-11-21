@@ -57,7 +57,7 @@ int main()
 	std::uniform_real_distribution<float> rand_x(0, base_x);
 	std::uniform_real_distribution<float> rand_y(0, base_y);
 	std::uniform_real_distribution<float> rand_r(10, 50);
-	std::uniform_real_distribution<float> rand_d(-1.0, 1.0);
+	std::uniform_real_distribution<float> rand_d(-2, 2);
 	std::vector<struct ball> all_ball;
 	for(int i = 0; i < 5; i++ ){
 		struct ball new_ball = {rand_x(dev), rand_y(dev), rand_r(dev), rand_d(dev), rand_d(dev)};
