@@ -10,3 +10,6 @@ Use ```0```, ```-```, and ```=``` to reset, decrease, and increase the value at 
 Use ```i``` to toggle linear interpolation on/off.
 
 Use ```o``` to cycle between different environments (metaball, random).
+
+### Credits
+Thanks to The Coding Train, who's [video on the Marching Squares algorithm](https://thecodingtrain.com/tracks/coding-in-the-cabana/c5-marching-squares/) done in Processing inspired this project.

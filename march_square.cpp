@@ -105,7 +105,6 @@ class MetaballEnv : public ScalarEnv2D {
 	}
 };
 
-//following https://www.youtube.com/watch?v=T46nu5e4pNI
 int main()
 {
 	SDL_Window* window = nullptr;
