@@ -131,14 +131,13 @@ int main()
 		new MetaballEnv(dev, base_x, base_y, grid_res),
 		new RandomEnv(dev, base_x, base_y, grid_res)
 	};
-	auto cur_env_iter = all_envs.begin()+1;
-	ScalarEnv2D *cur_env = all_envs[0];
-	//populate grid
+	auto cur_env_iter = all_envs.begin();
+	ScalarEnv2D *cur_env = *cur_env_iter;
 	cur_env->populate_grid();
 
 	//type of interpolation to use
 	std::vector<InterpType> types = {InterpType::None, InterpType::Linear};
-	auto cur_interp = types.begin()+1;
+	auto cur_interp = types.begin() + 1;
 
 	float thresh_default = 0.0;
 	float thresh = thresh_default;
