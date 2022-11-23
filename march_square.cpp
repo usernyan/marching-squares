@@ -38,6 +38,22 @@ class ScalarEnv2D {
 		int base_y;
 };
 
+class RandomEnv : public ScalarEnv2D {
+	public:
+		RandomEnv(std::random_device &dev, int b_x, int b_y, int r)
+		: ScalarEnv2D(b_x, b_y, r) {
+			//consider moving this to populate_grid and skipping the code based on a boolean flag that can be reset to regenerate the grid
+			std::uniform_real_distribution<float> nd(-1, 1);
+			for(int i = 0; i < scalar_field.size(); i++) {
+				for(int j = 0; j < scalar_field[i].size(); j++) {
+					scalar_field[i][j] = nd(dev);
+				}
+			}
+		}
+		void physics_step(int t) {return;};
+		void populate_grid() {return;};
+};
+
 class MetaballEnv : public ScalarEnv2D {
 	public:
 		std::vector<struct ball> all_ball;
@@ -110,11 +126,11 @@ int main()
 	SDL_RenderClear(renderer);
 
 	std::random_device dev;
-	/* std::uniform_real_distribution<float> nd(-1, 1); */
 
 	int grid_res = 20;
 	std::vector<ScalarEnv2D *> all_envs {
-		new MetaballEnv(dev, base_x, base_y, grid_res)
+		new MetaballEnv(dev, base_x, base_y, grid_res),
+		new RandomEnv(dev, base_x, base_y, grid_res)
 	};
 	auto cur_env_iter = all_envs.begin()+1;
 	ScalarEnv2D *cur_env = all_envs[0];
