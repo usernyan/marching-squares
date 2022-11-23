@@ -9,7 +9,6 @@ void line(auto r, SDL_Point a, SDL_Point b);
 enum class InterpType {None, Linear};
 void square_march(auto &g, auto thresh, auto res, InterpType it, auto renderer);
 
-
 class ScalarEnv2D {
 	public:
 		std::vector<std::vector<float>> scalar_field;
@@ -102,7 +101,7 @@ class MetaballEnv : public ScalarEnv2D {
 			float a = x - m.cx;
 			float b = y - m.cy;
 			return std::sqrt(a*a + b*b) + m.r;
-	}
+		}
 };
 
 int main()
