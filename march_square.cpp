@@ -267,21 +267,3 @@ void render_grid(auto &sample_grid, int res, auto renderer) {
 		}
 	}
 }
-
-void populate_grid(auto &g, auto &balls, auto res) {
-	for (int i = 0; i < g.size(); i++) {
-		auto m = g[i];
-		for (int j = 0; j < m.size(); j++) {
-			float x0 = i * res;
-			float y0 = j * res;
-			float d = 0;
-			for(int k = 0; k < balls.size(); k++) {
-				struct ball b = balls[k];
-				d += 1/ball_dist(x0, y0, b);
-			}
-			d = d * 40 - 1;
-			g[i][j] = d;
-		}
-	}
-
-}
