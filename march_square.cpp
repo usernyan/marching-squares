@@ -9,13 +9,6 @@ void line(auto r, SDL_Point a, SDL_Point b);
 enum class InterpType {None, Linear};
 void square_march(auto &g, auto thresh, auto res, InterpType it, auto renderer);
 
-struct ball {
-	float cx;
-	float cy;
-	float r;
-	float dx;
-	float dy;
-};
 
 class ScalarEnv2D {
 	public:
@@ -56,7 +49,6 @@ class RandomEnv : public ScalarEnv2D {
 
 class MetaballEnv : public ScalarEnv2D {
 	public:
-		std::vector<struct ball> all_ball;
 		MetaballEnv(std::random_device &dev, int b_x, int b_y, int r)
 		: ScalarEnv2D(b_x, b_y, r) {
 			std::uniform_real_distribution<float> rand_x(0, base_x);
@@ -65,7 +57,6 @@ class MetaballEnv : public ScalarEnv2D {
 			std::uniform_real_distribution<float> rand_d(-2, 2);
 			for(int i = 0; i < 5; i++){
 				struct ball new_ball = {rand_x(dev), rand_y(dev), rand_r(dev), rand_d(dev), rand_d(dev)};
-				std::cout << new_ball.cx << "," << new_ball.cy << std::endl;
 				all_ball.push_back(new_ball);
 			}
 		}
@@ -99,6 +90,14 @@ class MetaballEnv : public ScalarEnv2D {
 			}
 		}
 	private:
+		struct ball {
+			float cx;
+			float cy;
+			float r;
+			float dx;
+			float dy;
+		};
+		std::vector<struct ball> all_ball;
 		static float ball_dist(float x, float y, struct ball m) {
 			float a = x - m.cx;
 			float b = y - m.cy;
