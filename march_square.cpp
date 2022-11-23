@@ -113,7 +113,11 @@ int main()
 	/* std::uniform_real_distribution<float> nd(-1, 1); */
 
 	int grid_res = 20;
-	ScalarEnv2D *cur_env = new MetaballEnv(dev, base_x, base_y, grid_res);
+	std::vector<ScalarEnv2D *> all_envs {
+		new MetaballEnv(dev, base_x, base_y, grid_res)
+	};
+	auto cur_env_iter = all_envs.begin()+1;
+	ScalarEnv2D *cur_env = all_envs[0];
 	//populate grid
 	cur_env->populate_grid();
 
@@ -137,6 +141,12 @@ int main()
 						cur_interp++;
 						if (cur_interp == types.end())
 							cur_interp = types.begin();
+						break;
+					case SDLK_o:
+						cur_env_iter++;
+						if (cur_env_iter == all_envs.end())
+							cur_env_iter = all_envs.begin();
+						cur_env = *cur_env_iter;
 						break;
 					case SDLK_EQUALS:
 						thresh += d_thresh;
