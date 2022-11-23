@@ -173,7 +173,6 @@ int main()
 	SDL_RenderClear(renderer);
 
 	std::random_device dev;
-
 	int grid_res = 20;
 	std::vector<ScalarEnv2D *> all_envs {
 		new MetaballEnv(dev, base_x, base_y, grid_res),
@@ -192,6 +191,8 @@ int main()
 	float thresh_default = 0.0;
 	float thresh = thresh_default;
 	float d_thresh = 0.125;
+
+	bool paused;
 
 	while(running)
 	{
@@ -212,6 +213,9 @@ int main()
 							cur_env_iter = all_envs.begin();
 						cur_env = *cur_env_iter;
 						break;
+					case SDLK_p:
+						paused = !paused;
+						break;
 					case SDLK_EQUALS:
 						thresh += d_thresh;
 						break;
@@ -228,12 +232,13 @@ int main()
 		SDL_SetRenderDrawColor(renderer, 128, 128, 128, 255);
 		SDL_RenderClear(renderer);
 
-		cur_env->physics_step(1);
+		if (!paused) {
+			cur_env->physics_step(1);
+			cur_env->populate_grid();
+		}
 
-		cur_env->populate_grid();
 		render_grid(cur_env->scalar_field, cur_env->res, renderer);
 		square_march(cur_env->scalar_field, thresh, cur_env->res, *cur_interp, renderer);
-
 		SDL_RenderPresent(renderer);
 		SDL_Delay(50);
 	}
