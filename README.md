@@ -14,4 +14,4 @@ Use ```o``` to cycle between different environments (metaball, random, sine wave
 Use ```p``` to pause the environment.
 
 ### Credits
-Thanks to The Coding Train, who's [video on the Marching Squares algorithm](https://thecodingtrain.com/tracks/coding-in-the-cabana/c5-marching-squares/) done in Processing inspired this project.
+Thanks to The Coding Train. Their [video on the Marching Squares algorithm done with Processing](https://thecodingtrain.com/tracks/coding-in-the-cabana/c5-marching-squares/) inspired this project.
