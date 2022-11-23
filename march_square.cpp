@@ -18,12 +18,6 @@ struct ball {
 	float dy;
 };
 
-float ball_dist(float x, float y, struct ball m) {
-	float a = x - m.cx;
-	float b = y - m.cy;
-	return std::sqrt(a*a + b*b) + m.r;
-}
-
 class ScalarEnv2D {
 	public:
 		virtual void physics_step(int t) = 0;
@@ -79,6 +73,11 @@ class MetaballEnv : public ScalarEnv2D {
 	private:
 		int base_x;
 		int base_y;
+		static float ball_dist(float x, float y, struct ball m) {
+			float a = x - m.cx;
+			float b = y - m.cy;
+			return std::sqrt(a*a + b*b) + m.r;
+	}
 };
 
 //following https://www.youtube.com/watch?v=T46nu5e4pNI
