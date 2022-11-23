@@ -24,6 +24,63 @@ float ball_dist(float x, float y, struct ball m) {
 	return std::sqrt(a*a + b*b) + m.r;
 }
 
+class ScalarEnv2D {
+	public:
+		virtual void physics_step(int t) = 0;
+		virtual void populate_grid(std::vector<std::vector<float>>  &g, int res) = 0;
+};
+
+class MetaballEnv : public ScalarEnv2D {
+	public:
+		std::vector<struct ball> all_ball;
+		MetaballEnv(std::random_device &dev, int b_x, int b_y) {
+			base_x = b_x;
+			base_y = b_y;
+			std::uniform_real_distribution<float> rand_x(0, base_x);
+			std::uniform_real_distribution<float> rand_y(0, base_y);
+			std::uniform_real_distribution<float> rand_r(10, 50);
+			std::uniform_real_distribution<float> rand_d(-2, 2);
+			for(int i = 0; i < 5; i++){
+				struct ball new_ball = {rand_x(dev), rand_y(dev), rand_r(dev), rand_d(dev), rand_d(dev)};
+				std::cout << new_ball.cx << "," << new_ball.cy << std::endl;
+				all_ball.push_back(new_ball);
+			}
+		}
+
+		void physics_step(int t) {
+			for(int i = 0; i < all_ball.size(); i++) {
+				struct ball *b = &all_ball[i];
+				b->cx += b->dx;
+				b->cy += b->dy;
+				if (b->cx < 0 || b->cx > base_x)
+					b->dx *= -1;
+				if (b->cy < 0 || b->cy > base_y)
+					b->dy *= -1;
+			}
+		}
+
+		void populate_grid(std::vector<std::vector<float>> &g, int res) {
+			for (int i = 0; i < g.size(); i++) {
+				auto m = g[i];
+				for (int j = 0; j < m.size(); j++) {
+					float x0 = i * res;
+					float y0 = j * res;
+					float d = 0;
+					for(int k = 0; k < all_ball.size(); k++) {
+						struct ball b = all_ball[k];
+						d += 1/ball_dist(x0, y0, b);
+					}
+					d = d * 40 - 1;
+					g[i][j] = d;
+				}
+			}
+
+		}
+	private:
+		int base_x;
+		int base_y;
+};
+
 //following https://www.youtube.com/watch?v=T46nu5e4pNI
 int main()
 {
@@ -54,17 +111,10 @@ int main()
 	for(int i = 0; i < col; i++) {
 		sample_grid[i].resize(row);
 	}
-	std::uniform_real_distribution<float> rand_x(0, base_x);
-	std::uniform_real_distribution<float> rand_y(0, base_y);
-	std::uniform_real_distribution<float> rand_r(10, 50);
-	std::uniform_real_distribution<float> rand_d(-2, 2);
-	std::vector<struct ball> all_ball;
-	for(int i = 0; i < 5; i++ ){
-		struct ball new_ball = {rand_x(dev), rand_y(dev), rand_r(dev), rand_d(dev), rand_d(dev)};
-		all_ball.push_back(new_ball);
-	}
+
+	ScalarEnv2D *cur_env = new MetaballEnv(dev, base_x, base_y);
 	//populate grid
-	populate_grid(sample_grid, all_ball, grid_res);
+	cur_env->populate_grid(sample_grid, grid_res);
 
 	//type of interpolation to use
 	std::vector<InterpType> types = {InterpType::None, InterpType::Linear};
@@ -103,17 +153,9 @@ int main()
 		SDL_SetRenderDrawColor(renderer, 128, 128, 128, 255);
 		SDL_RenderClear(renderer);
 
-		for(int i = 0; i < all_ball.size(); i++) {
-			struct ball *b = &all_ball[i];
-			b->cx += b->dx;
-			b->cy += b->dy;
-			if (b->cx < 0 || b->cx > base_x)
-				b->dx *= -1;
-			if (b->cy < 0 || b->cy > base_y)
-				b->dy *= -1;
-		}
+		cur_env->physics_step(1);
 
-		populate_grid(sample_grid, all_ball, grid_res);
+		cur_env->populate_grid(sample_grid, grid_res);
 		render_grid(sample_grid, grid_res, renderer);
 		square_march(sample_grid, thresh, grid_res, *cur_interp, renderer);
 
