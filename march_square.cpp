@@ -159,7 +159,7 @@ int main()
 	SDL_Window* window = nullptr;
 	SDL_Renderer* renderer = nullptr;
 	SDL_Event e;
-	/* SDL_Init(SDL_INIT_EVERYTHING); */
+	SDL_Init(SDL_INIT_EVERYTHING);
 	bool running = true;
 
 	//screen dimensions and SDL initialization
@@ -242,6 +242,11 @@ int main()
 		SDL_RenderPresent(renderer);
 		SDL_Delay(50);
 	}
+	for(int i = 0; i < all_envs.size(); i++) {
+		ScalarEnv2D *c = all_envs[i];
+		delete c;
+	}
+	SDL_Quit();
 }
 
 Uint8 gte_thresh(auto v, auto h) {
