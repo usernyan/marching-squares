@@ -36,7 +36,9 @@ class WavyParabolaEnv : public ScalarEnv2D {
 		: ScalarEnv2D(b_x, b_y, r) {
 			populate_grid();
 		}
-		void physics_step(int t) {phase += (float)t/20; return;}
+		void physics_step(int t) {
+			phase += (float)t/20;
+		}
 		void populate_grid() {
 			for(int i = 0; i < scalar_field.size(); i++) {
 				for(int j = 0; j < scalar_field[i].size();j++) {
@@ -60,7 +62,6 @@ class SineEnv : public ScalarEnv2D {
 		}
 		void physics_step(int t) {
 			phase += (float)t/20;
-			return;
 		}
 		void populate_grid() {
 			for(int i = 0; i < scalar_field.size(); i++) {
