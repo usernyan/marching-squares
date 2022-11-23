@@ -30,6 +30,28 @@ class ScalarEnv2D {
 		int base_y;
 };
 
+class WavyParabolaEnv : public ScalarEnv2D {
+	public:
+		WavyParabolaEnv(int b_x, int b_y, int r)
+		: ScalarEnv2D(b_x, b_y, r) {
+			populate_grid();
+		}
+		void physics_step(int t) {phase += (float)t/20; return;}
+		void populate_grid() {
+			for(int i = 0; i < scalar_field.size(); i++) {
+				for(int j = 0; j < scalar_field[i].size();j++) {
+					float x = i * res;
+					float y = j * res;
+					x = x - base_x/2;
+					float dist_y = y - x*x/(scalar_field[i].size()*2) - 2*res;
+					scalar_field[i][j] = std::sin(dist_y / 100 + phase);
+				}
+			}
+		}
+	private:
+		float phase = 0;
+};
+
 class SineEnv : public ScalarEnv2D {
 	public:
 		SineEnv(int b_x, int b_y, int r)
@@ -156,6 +178,7 @@ int main()
 		new MetaballEnv(dev, base_x, base_y, grid_res),
 		new RandomEnv(dev, base_x, base_y, grid_res),
 		new SineEnv(base_x, base_y, grid_res),
+		new WavyParabolaEnv(base_x, base_y, grid_res),
 	};
 	auto cur_env_iter = all_envs.begin();
 	ScalarEnv2D *cur_env = *cur_env_iter;
