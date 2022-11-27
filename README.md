@@ -1,5 +1,5 @@
 # marching-squares
-![test](./demo.gif)
+![A gif of the metaball environment.](./demo.gif)
 
 A visualization of the marching squares algorithm in C++ with SDL2
 
