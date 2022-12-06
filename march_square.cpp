@@ -68,10 +68,12 @@ class SineEnv : public ScalarEnv2D {
 				for(int j = 0; j < scalar_field[i].size();j++) {
 					float x = i * res;
 					float y = j * res;
-					x = x - base_x/2;
-					float amp = 4 * res;
-					float shift_to_center = - (base_y/res)*res/2;
-					float dist_y = y - std::sin(x/3 + phase)*amp + shift_to_center;
+					/* x = x - base_x/2; */
+					float amp = base_y / 4;
+					float shift_to_center = -(base_y/res)*res/2;
+					float center_y= y - base_y/2;
+					float val = std::sin(3.14 * 3 * x/base_x + phase) * amp;
+					float dist_y = center_y - val;
 					scalar_field[i][j] = dist_y/500;
 				}
 			}
